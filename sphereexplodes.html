@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+    <HTML>
+        <head>
+            <title>spheres exploding</title>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+        </head>
+
+
+        <body>
+  <script>
+      let pieces = [];
+      let explosionSpeed = 2;
+
+      function setup() {
+        createCanvas(windowWidth, windowHeight, WEBGL);
+		fill(120,10,180);
+        let sphereSize = 100;
+        // Create the pieces of the sphere
+        for (let x = -1; x <= 1; x++) {
+          for (let y = -1; y <= 1; y++) {
+            for (let z = -1; z <= 1; z++) {
+              if (x !== 0 || y !== 0 || z !== 0) { // skip the center piece
+                let piece = {
+                  pos: createVector(x * sphereSize / 2, y * sphereSize / 2, z * sphereSize / 2),
+                  vel: createVector(random(-1, 1), random(-1, 1), random(-1, 1)).mult(explosionSpeed),
+                  size: sphereSize / 2
+                };
+                pieces.push(piece);
+              }
+            }
+          }
+        }
+      }
+
+      function draw() {
+        background(200,120,200);
+        rotateY(frameCount * 0.01);
+        rotateX(frameCount * 0.01);
+
+        for (let piece of pieces) {
+          push();
+          translate(piece.pos.x, piece.pos.y, piece.pos.z);
+          sphere(piece.size);
+          pop();
+
+          // Update piece position
+          piece.pos.add(piece.vel);
+        }
+      }
+    </script>
+  </body>
+</html>
